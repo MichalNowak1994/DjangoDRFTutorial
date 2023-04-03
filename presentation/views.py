@@ -7,6 +7,8 @@ from django.db.models import Avg, Count
 from django.db import connection
 from django.db.models import F, Q
 from rest_framework import views, status
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 
 class BookList(generics.ListCreateAPIView):
@@ -28,7 +30,8 @@ class BookAggregateView(generics.GenericAPIView):
     queryset = Book.objects.all()
 
     def get(self, request, *args, **kwargs):
-        aggregate_data = self.queryset.aggregate(average_price=Avg('price'), total_books=Count('id'))
+        aggregate_data = self.queryset.aggregate(average_price=Avg('price'),
+                                                 total_books=Count('id'))
         return Response(aggregate_data)
 
 
@@ -37,7 +40,8 @@ class BookSelectRelatedView(generics.ListAPIView):
     serializer_class = BookSerializer
 
     def get_queryset(self):
-        return Book.objects.select_related('author').annotate(title_length=Length('title'))
+        return Book.objects.select_related('author').annotate(
+            title_length=Length('title'))
 
 
 class BookPrefetchRelatedView(generics.ListAPIView):
@@ -53,7 +57,8 @@ class BookDeferView(generics.ListAPIView):
     serializer_class = BookSerializer
 
     def get_queryset(self):
-        return Book.objects.defer('publication_date').annotate(title_length=Length('title'))
+        return Book.objects.defer('publication_date').annotate(
+            title_length=Length('title'))
 
 
 class BookOnlyView(generics.ListAPIView):
@@ -105,3 +110,14 @@ class FilteredBookListView(generics.ListAPIView):
             Q(title__icontains=query)
         )
         return queryset
+
+
+class CachedBookList(generics.ListCreateAPIView):
+    # Queryset with catch used MethodDecorator
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    @method_decorator(cache_page(60))
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+

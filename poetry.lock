@@ -69,15 +69,19 @@ django = ">=3.0"
 pytz = "*"
 
 [[package]]
-name = "package"
-version = "0.1.1"
-description = "package is a package to package your package"
+name = "drf-extensions"
+version = "0.7.1"
+description = "Extensions for Django REST Framework"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "package-0.1.1.tar.gz", hash = "sha256:01eee19a56a936bd63222f0a3c531fcdba37b5ad1bd833b960d62fb960b4955e"},
+    {file = "drf-extensions-0.7.1.tar.gz", hash = "sha256:90abfc11a2221e8daf4cd54457e41ed38cd71134678de9622e806193db027db1"},
+    {file = "drf_extensions-0.7.1-py2.py3-none-any.whl", hash = "sha256:007910437e64aa1d5ad6fc47266a4ac4280e31761e6458eb30fcac7494ac7d4e"},
 ]
+
+[package.dependencies]
+djangorestframework = ">=3.9.3"
 
 [[package]]
 name = "pytz"
@@ -118,4 +122,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "ab6d1dec8d4612e5e680ad7cdc66ca3a441d279bfe94c90040d14bb7d173409c"
+content-hash = "4fd847ce71c962d3ad148e7fcec6d3e71faa53796f349248768cc83f627e6c27"

@@ -2,9 +2,11 @@ import debug_toolbar
 from django.urls import path, include
 from rest_framework import routers
 
-from presentation.views import BookList, BookAnnotateView, BookAggregateView, BookSelectRelatedView, \
-    BookPrefetchRelatedView, BookDeferView, BookOnlyView, BookRawView, BookExtraView, UpdateBookPricesView, \
-    FilteredBookListView
+from presentation.views import BookList, BookAnnotateView, BookAggregateView, \
+    BookSelectRelatedView, \
+    BookPrefetchRelatedView, BookDeferView, BookOnlyView, BookRawView, BookExtraView, \
+    UpdateBookPricesView, \
+    FilteredBookListView, CachedBookList, CachedMixinBookList
 
 router = routers.DefaultRouter()
 router.register(r'presentation', BookList, basename='presentation')
@@ -22,5 +24,6 @@ urlpatterns = [
     path('books/extra/', BookExtraView.as_view()),
     path('update_prices_with_f_objects/', UpdateBookPricesView.as_view()),
     path('filtered_book_list/', FilteredBookListView.as_view()),
+    path('books/with_cache', CachedBookList.as_view()),
 
 ]
