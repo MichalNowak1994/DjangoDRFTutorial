@@ -5,6 +5,8 @@ from django.db.models.functions import Length
 from rest_framework.response import Response
 from django.db.models import Avg, Count
 from django.db import connection
+from django.db.models import F, Q
+from rest_framework import views, status
 
 
 class BookList(generics.ListCreateAPIView):
@@ -83,3 +85,23 @@ class BookExtraView(generics.ListAPIView):
 
     def get_queryset(self):
         return Book.objects.extra(select={'title': 'title', 'price': 'price'})
+
+
+class UpdateBookPricesView(views.APIView):
+    # Queryset with F Object
+    @staticmethod
+    def get(request, *args, **kwargs):
+        Book.objects.update(price=F('price') * 1.1)
+        return Response({"message": "Book prices updated"}, status=status.HTTP_200_OK)
+
+
+class FilteredBookListView(generics.ListAPIView):
+    # Queryset with Q Object
+    serializer_class = BookSerializer
+
+    def get_queryset(self):
+        query = self.request.query_params.get('query', '')
+        queryset = Book.objects.filter(
+            Q(title__icontains=query)
+        )
+        return queryset
