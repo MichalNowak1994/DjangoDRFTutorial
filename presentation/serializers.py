@@ -8,6 +8,12 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+class OnlyBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ['title', 'price']
+
+
 class BookSerializer(serializers.ModelSerializer):
     title_length = serializers.IntegerField(read_only=True)
     author = AuthorSerializer()
@@ -21,4 +27,3 @@ class BookSerializer(serializers.ModelSerializer):
         author, created = Author.objects.get_or_create(name=author_data['name'])
         book = Book.objects.create(author=author, **validated_data)
         return book
-
