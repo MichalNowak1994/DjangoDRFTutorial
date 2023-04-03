@@ -38,6 +38,7 @@ class BookSelectRelatedView(generics.ListAPIView):
 
 
 class BookPrefetchRelatedView(generics.ListAPIView):
+    # Queryset with prefetch_related
     serializer_class = AuthorSerializer
 
     def get_queryset(self):
