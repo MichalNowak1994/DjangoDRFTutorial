@@ -4,6 +4,7 @@ from .serializers import BookSerializer, AuthorSerializer, OnlyBookSerializer
 from django.db.models.functions import Length
 from rest_framework.response import Response
 from django.db.models import Avg, Count
+from django.db import connection
 
 
 class BookList(generics.ListCreateAPIView):
@@ -67,7 +68,13 @@ class BookRawView(generics.ListAPIView):
 
     def get_queryset(self):
         raw_sql = 'SELECT title, price FROM presentation_book'
-        return Book.objects.raw(raw_sql)
+        with connection.cursor() as cursor:
+            cursor.execute(raw_sql)
+            results = cursor.fetchall()
+            return [
+                Book(title=row[0], price=row[1])
+                for row in results
+            ]
 
 
 class BookExtraView(generics.ListAPIView):
