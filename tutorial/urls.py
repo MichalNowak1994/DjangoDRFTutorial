@@ -2,7 +2,8 @@ import debug_toolbar
 from django.urls import path, include
 from rest_framework import routers
 
-from presentation.views import BookList, BookAnnotateView, BookAggregateView, BookSelectRelatedView
+from presentation.views import BookList, BookAnnotateView, BookAggregateView, BookSelectRelatedView, \
+    BookPrefetchRelatedView
 
 router = routers.DefaultRouter()
 router.register(r'presentation', BookList, basename='presentation')
@@ -13,5 +14,6 @@ urlpatterns = [
     path('books/annotate/', BookAnnotateView.as_view()),
     path('books/aggregate/', BookAggregateView.as_view()),
     path('books/select_related/', BookSelectRelatedView.as_view()),
+    path('books/prefetch_related/', BookPrefetchRelatedView.as_view()),
 
 ]

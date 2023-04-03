@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Book
-from .serializers import BookSerializer
+from .models import Book, Author
+from .serializers import BookSerializer, AuthorSerializer
 from django.db.models.functions import Length
 from rest_framework.response import Response
 from django.db.models import Avg, Count
@@ -35,3 +35,10 @@ class BookSelectRelatedView(generics.ListAPIView):
 
     def get_queryset(self):
         return Book.objects.select_related('author').annotate(title_length=Length('title'))
+
+
+class BookPrefetchRelatedView(generics.ListAPIView):
+    serializer_class = AuthorSerializer
+
+    def get_queryset(self):
+        return Author.objects.prefetch_related('book_set')
