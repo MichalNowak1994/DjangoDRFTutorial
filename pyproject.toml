@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "tutorial"
+version = "0.1.0"
+description = ""
+authors = ["Michal Nowak <m.nowak@bankier.pl >"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.1.7"
+djangorestframework = "^3.14.0"
+django-debug-toolbar = "^3.8.1"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
