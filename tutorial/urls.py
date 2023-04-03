@@ -3,7 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from presentation.views import BookList, BookAnnotateView, BookAggregateView, BookSelectRelatedView, \
-    BookPrefetchRelatedView, BooksDeferView, BooksOnlyView
+    BookPrefetchRelatedView, BookDeferView, BookOnlyView, BookRawView, BookExtraView
 
 router = routers.DefaultRouter()
 router.register(r'presentation', BookList, basename='presentation')
@@ -15,6 +15,9 @@ urlpatterns = [
     path('books/aggregate/', BookAggregateView.as_view()),
     path('books/select_related/', BookSelectRelatedView.as_view()),
     path('books/prefetch_related/', BookPrefetchRelatedView.as_view()),
-    path('books/defer/', BooksDeferView.as_view()),
-    path('books/only/', BooksOnlyView.as_view()),
+    path('books/defer/', BookDeferView.as_view()),
+    path('books/only/', BookOnlyView.as_view()),
+    path('books/raw/', BookRawView.as_view()),
+    path('books/extra/', BookExtraView.as_view()),
+
 ]
