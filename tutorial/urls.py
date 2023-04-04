@@ -6,7 +6,7 @@ from presentation.views import BookList, BookAnnotateView, BookAggregateView, \
     BookSelectRelatedView, \
     BookPrefetchRelatedView, BookDeferView, BookOnlyView, BookRawView, BookExtraView, \
     UpdateBookPricesView, \
-    FilteredBookListView, CachedBookList
+    FilteredBookListView, CachedBookList, FragmentCachedBookList
 
 router = routers.DefaultRouter()
 router.register(r'presentation', BookList, basename='presentation')
@@ -25,5 +25,6 @@ urlpatterns = [
     path('update_prices_with_f_objects/', UpdateBookPricesView.as_view()),
     path('filtered_book_list/', FilteredBookListView.as_view()),
     path('books/with_cache', CachedBookList.as_view()),
+    path('books/fragment_cached_book_list', FragmentCachedBookList.as_view()),
 
 ]

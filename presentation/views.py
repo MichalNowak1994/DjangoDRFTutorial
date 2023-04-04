@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework import generics
 from .models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer, OnlyBookSerializer
@@ -121,3 +122,12 @@ class CachedBookList(generics.ListCreateAPIView):
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+
+class FragmentCachedBookList(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        context = {'book_list': queryset}
+        return render(request, 'book_list.html', context)

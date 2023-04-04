@@ -1,0 +1,38 @@
+{% load cache %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+</head>
+<body>
+<h1>Book List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Publication Date</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% cache 60 book %}
+        {% for book in book_list %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author.name }}</td>
+                <td>{{ book.publication_date }}</td>
+                <td>{{ book.price }}</td>
+            </tr>
+        {% endfor %}
+    {% endcache %}
+    </tbody>
+</table>
+</body>
+</html>
