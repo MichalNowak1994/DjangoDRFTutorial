@@ -6,14 +6,14 @@ from presentation.views import BookList, BookAnnotateView, BookAggregateView, \
     BookSelectRelatedView, \
     BookPrefetchRelatedView, BookDeferView, BookOnlyView, BookRawView, BookExtraView, \
     UpdateBookPricesView, \
-    FilteredBookListView, CachedBookList, CachedMixinBookList
+    FilteredBookListView, CachedBookList
 
 router = routers.DefaultRouter()
 router.register(r'presentation', BookList, basename='presentation')
 
 urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
-    path('books/', BookList.as_view()),
+    path('books/<int:pk>/', BookList.as_view()),
     path('books/annotate/', BookAnnotateView.as_view()),
     path('books/aggregate/', BookAggregateView.as_view()),
     path('books/select_related/', BookSelectRelatedView.as_view()),

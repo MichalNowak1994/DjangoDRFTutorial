@@ -11,7 +11,7 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 
 
-class BookList(generics.ListCreateAPIView):
+class BookList(generics.RetrieveAPIView):
     # Queryset
     queryset = Book.objects.all()
     serializer_class = BookSerializer
