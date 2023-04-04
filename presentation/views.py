@@ -124,6 +124,7 @@ class CachedBookList(generics.ListCreateAPIView):
 
 
 class FragmentCachedBookList(generics.ListCreateAPIView):
+    # A query set with a catch function using fragment capture
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
