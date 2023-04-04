@@ -6,7 +6,8 @@ from presentation.views import BookList, BookAnnotateView, BookAggregateView, \
     BookSelectRelatedView, \
     BookPrefetchRelatedView, BookDeferView, BookOnlyView, BookRawView, BookExtraView, \
     UpdateBookPricesView, \
-    FilteredBookListView, CachedBookList, FragmentCachedBookList
+    FilteredBookListView, CachedBookList, FragmentCachedBookList, PaginatorBooksView, \
+    PaginationBasedOnTemplate
 
 router = routers.DefaultRouter()
 router.register(r'presentation', BookList, basename='presentation')
@@ -26,5 +27,6 @@ urlpatterns = [
     path('filtered_book_list/', FilteredBookListView.as_view()),
     path('books/with_cache', CachedBookList.as_view()),
     path('books/fragment_cached_book_list', FragmentCachedBookList.as_view()),
-
+    path('books/list_with_paginator', PaginatorBooksView.as_view()),
+    path('books/pagination_based_on_template', PaginationBasedOnTemplate.as_view()),
 ]

@@ -1,5 +1,10 @@
+from django.core.paginator import Paginator
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.views import View
 from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
+
 from .models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer, OnlyBookSerializer
 from django.db.models.functions import Length
@@ -132,3 +137,39 @@ class FragmentCachedBookList(generics.ListCreateAPIView):
         queryset = self.get_queryset()
         context = {'book_list': queryset}
         return render(request, 'book_list.html', context)
+
+
+class PaginatorBooksView(generics.ListCreateAPIView):
+    def get(self, request, *args, **kwargs):
+        queryset = Book.objects.all().order_by('id')
+        paginator = Paginator(queryset, 2)
+        page = request.GET.get('page')
+        items = paginator.get_page(page)
+
+        serializer = BookSerializer(items, many=True)
+        serialized_data = serializer.data
+
+        response_data = {
+            'results': serialized_data,
+            'has_next': items.has_next(),
+            'has_previous': items.has_previous(),
+            'num_pages': paginator.num_pages,
+        }
+
+        return JsonResponse(response_data)
+
+
+class PaginationBasedOnTemplate(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset().order_by('id')
+
+        paginator = Paginator(queryset, 2)
+        page = request.GET.get('page')
+        books = paginator.get_page(page)
+
+        context = {'book_list': books}
+        return render(request, 'book_list_2.html', context)
+
