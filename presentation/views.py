@@ -1,10 +1,7 @@
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views import View
 from rest_framework import generics
-from rest_framework.pagination import PageNumberPagination
-
 from .models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer, OnlyBookSerializer
 from django.db.models.functions import Length
