@@ -1,11 +1,19 @@
 from rest_framework import serializers
-from .models import Book, Author
+from .models import Book, Author, AuthorProfile
 
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ['id', 'name']
+
+
+class AuthorProfileSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+
+    class Meta:
+        model = AuthorProfile
+        fields = ('author', 'publishing_house', 'date_of_birth')
 
 
 class OnlyBookSerializer(serializers.ModelSerializer):

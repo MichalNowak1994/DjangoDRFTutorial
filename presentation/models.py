@@ -5,6 +5,12 @@ class Author(models.Model):
     name = models.CharField(max_length=100)
 
 
+class AuthorProfile(models.Model):
+    author = models.OneToOneField(Author, on_delete=models.CASCADE)
+    publishing_house = models.TextField()
+    date_of_birth = models.DateField()
+
+
 class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
