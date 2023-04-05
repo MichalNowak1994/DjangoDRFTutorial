@@ -4,8 +4,9 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.pagination import LimitOffsetPagination
 
-from .models import Book, Author, AuthorProfile
-from .serializers import BookSerializer, AuthorSerializer, OnlyBookSerializer, AuthorProfileSerializer
+from .models import Book, Author, AuthorProfile, Category
+from .serializers import BookSerializer, AuthorSerializer, OnlyBookSerializer, AuthorProfileSerializer, \
+    CategorySerializer
 from django.db.models.functions import Length
 from rest_framework.response import Response
 from django.db.models import Avg, Count
@@ -192,3 +193,8 @@ class CustomLimitOffsetPaginationView(generics.ListAPIView):
 class OneToOneRelationView(generics.ListCreateAPIView):
     serializer_class = AuthorProfileSerializer
     queryset = AuthorProfile.objects.all()
+
+
+class ManyToManyRelationView(generics.ListAPIView):
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()

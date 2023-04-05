@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, Author, AuthorProfile
+from .models import Book, Author, AuthorProfile, Category
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -35,3 +35,11 @@ class BookSerializer(serializers.ModelSerializer):
         author, created = Author.objects.get_or_create(name=author_data['name'])
         book = Book.objects.create(author=author, **validated_data)
         return book
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    book_set = BookSerializer(many=True)
+
+    class Meta:
+        model = Category
+        fields = ['name', 'book_set']
