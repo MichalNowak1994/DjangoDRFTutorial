@@ -7,7 +7,7 @@ from presentation.views import BookList, BookAnnotateView, BookAggregateView, \
     BookPrefetchRelatedView, BookDeferView, BookOnlyView, BookRawView, BookExtraView, \
     UpdateBookPricesView, \
     FilteredBookListView, CachedBookList, FragmentCachedBookList, PaginatorBooksView, \
-    PaginationBasedOnTemplate
+    PaginationBasedOnTemplate, LimitOffsetPaginationView, CustomLimitOffsetPaginationView
 
 router = routers.DefaultRouter()
 router.register(r'presentation', BookList, basename='presentation')
@@ -29,4 +29,7 @@ urlpatterns = [
     path('books/fragment_cached_book_list', FragmentCachedBookList.as_view()),
     path('books/list_with_paginator', PaginatorBooksView.as_view()),
     path('books/pagination_based_on_template', PaginationBasedOnTemplate.as_view()),
+    path('books/limitoffset_pagination_view', LimitOffsetPaginationView.as_view()),
+    path('books/custom_limitoffset_pagination_view', CustomLimitOffsetPaginationView.as_view()),
 ]
+

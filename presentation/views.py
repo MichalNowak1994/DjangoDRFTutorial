@@ -2,6 +2,8 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework.pagination import LimitOffsetPagination
+
 from .models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer, OnlyBookSerializer
 from django.db.models.functions import Length
@@ -170,3 +172,18 @@ class PaginationBasedOnTemplate(generics.ListAPIView):
         context = {'book_list': books}
         return render(request, 'book_list_2.html', context)
 
+
+class LimitOffsetPaginationView(generics.ListAPIView):
+    serializer_class = BookSerializer
+    pagination_class = LimitOffsetPagination
+    queryset = Book.objects.all()
+
+
+class CustomLimitOffsetPagination(LimitOffsetPagination):
+    default_limit = 2
+
+
+class CustomLimitOffsetPaginationView(generics.ListAPIView):
+    serializer_class = BookSerializer
+    pagination_class = CustomLimitOffsetPagination
+    queryset = Book.objects.all()
