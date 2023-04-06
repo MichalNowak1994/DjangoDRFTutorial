@@ -4,9 +4,10 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.pagination import LimitOffsetPagination
 
-from .models import Book, Author, AuthorProfile, Category
-from .serializers import BookSerializer, AuthorSerializer, OnlyBookSerializer, AuthorProfileSerializer, \
-    CategorySerializer
+from .models import Book, Author, AuthorProfile, Category, SecondTableBooks
+from .serializers import BookSerializer, AuthorSerializer, OnlyBookSerializer, \
+    AuthorProfileSerializer, \
+    CategorySerializer, Db2BookSerializer
 from django.db.models.functions import Length
 from rest_framework.response import Response
 from django.db.models import Avg, Count
@@ -198,3 +199,29 @@ class OneToOneRelationView(generics.ListCreateAPIView):
 class ManyToManyRelationView(generics.ListAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
+
+class FilteredBooksToDb2(generics.ListAPIView):
+    serializer_class = Db2BookSerializer
+
+    def get_queryset(self):
+        all_books = Book.objects.all()
+        book_serializer = OnlyBookSerializer(all_books, many=True)
+
+        for book_data, original_book in zip(book_serializer.data, all_books):
+            if not original_book:
+                continue
+
+            new_book = SecondTableBooks()
+            new_book.title = book_data['title']
+            new_book.price = book_data['price']
+
+            author = original_book.author
+            author_serializer = AuthorProfileSerializer(author.authorprofile)
+
+            author_name = author_serializer.data['author']['name']
+            new_book.author = author_name
+
+            new_book.save(using='mydatabase')
+
+        return all_books
